@@ -32,7 +32,7 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-exclude: static/**,.h2.server.properties
+      additional-exclude: static/**
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
   jackson:
@@ -48,20 +48,20 @@ spring:
       # it can be set to any label, branch or commit of the configuration source Git repository
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./build/h2db/db/expensescontrol;DB_CLOSE_DELAY=-1;MODE=LEGACY
-    username: ExpensesControl
-    password:
+    url: jdbc:mysql://localhost:3306/ExpensesControl?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: admin
     hikari:
       poolName: Hikari
       auto-commit: false
-  h2:
-    console:
-      # disable spring boot built-in h2-console since we start it manually with correct configuration
-      enabled: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
   jpa:
   liquibase:
-    # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev, faker
+    contexts: dev
   mail:
     host: localhost
     port: 25
@@ -117,7 +117,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: MGJlZWQ5ZWZkNDc5YWFkOGY0YjE5Nzk3NzllYzY3OThjM2I3YjYzNjU0MzQ0Njg3ZTJlYTM1OWI3OTQzMzM4Mjg3N2VjMzg2ZDUxNDk0ZjIxOTRmYzMzZTcwNTU1N2U3NjY0YmMxZTg0NWRiOGNjMmU5NDBjNTk5MjhkZGRjNzQ=
+        base64-secret: YjVjZTExNmE5ODZiYzk4NzAyZWU0NTg5YjBlYjgwYzkyYmNmMDIwODMwNWI3YTA0YWVmZGViZDRmOTk0NjdlNTg1MTdlMjMyMTY0NzY2MmExODkwZWIzYzc3YmJhYWVlOWNlMzJiOGU2YzcxNWUzMzA4MmRjZGQyNDYyMzM3Y2I=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
